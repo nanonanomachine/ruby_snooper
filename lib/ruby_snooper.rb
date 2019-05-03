@@ -4,8 +4,22 @@ require "ruby_snooper/trace_writer"
 module RubySnooper
   class Error < StandardError; end
 
+  CLASS_NAME_PATTERN = /\<class\:(\w+)\>/.freeze
+
   def snoop(*method_names)
-    to_prepend = Module.new do
+    prepend to_prepend(method_names)
+  end
+
+  def snoop_class_methods(*method_names)
+    Kernel.const_get(caller_locations.first.label.match(CLASS_NAME_PATTERN)[1])
+          .singleton_class
+          .prepend(to_prepend(method_names))
+  end
+
+  private
+
+  def to_prepend(method_names)
+    Module.new do
       method_names.each do |method_name|
         define_method(method_name) do |*args, &block|
           trace_writer = TraceWriter.new(
@@ -20,6 +34,5 @@ module RubySnooper
         end
       end
     end
-    prepend to_prepend
   end
 end
