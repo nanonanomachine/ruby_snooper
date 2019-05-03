@@ -43,7 +43,7 @@ SampleClass.new.sample_instance_method(1, 2)
 SampleClass.sample_class_method(1, 2)
 ```
 
-The output to stdout is:
+The output to stderr is:
 
 ```ruby
 From /some/file/path.rb
