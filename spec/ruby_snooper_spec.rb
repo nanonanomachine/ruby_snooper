@@ -8,16 +8,16 @@ RSpec.describe RubySnooper do
       subject { SampleClass.new.sample_instance_method(1, 2) }
 
       it do
-        expect(STDOUT).to receive(:puts).with(/^From.*\/ruby_snooper\/spec\/ruby_snooper_spec.rb$/)
-        expect(STDOUT).to receive(:puts).with(/^Starting var arg1 = 1, arg2 = 2, arg3 = nil$/)
-        expect(STDOUT).to receive(:puts).with(/call   59     def sample_instance_*method\(arg1, arg2\)$/)
-        expect(STDOUT).to receive(:puts).with(/line   60       arg1 \= arg1 \+ 1$/)
-        expect(STDOUT).to receive(:puts).with(/^Modified var arg1 = 2$/)
-        expect(STDOUT).to receive(:puts).with(/line   61       arg3 \= arg1 \+ arg2$/)
-        expect(STDOUT).to receive(:puts).with(/^Modified var arg3 = 4$/)
-        expect(STDOUT).to receive(:puts).with(/line   62       arg3 \* 2$/)
-        expect(STDOUT).to receive(:puts).with(/return 63     end$/)
-        expect(STDOUT).to receive(:puts).with(/Return value 8/)
+        expect(STDERR).to receive(:puts).with(/^From.*\/ruby_snooper\/spec\/ruby_snooper_spec.rb$/)
+        expect(STDERR).to receive(:puts).with(/^Starting var arg1 = 1, arg2 = 2, arg3 = nil$/)
+        expect(STDERR).to receive(:puts).with(/call   59     def sample_instance_*method\(arg1, arg2\)$/)
+        expect(STDERR).to receive(:puts).with(/line   60       arg1 \= arg1 \+ 1$/)
+        expect(STDERR).to receive(:puts).with(/^Modified var arg1 = 2$/)
+        expect(STDERR).to receive(:puts).with(/line   61       arg3 \= arg1 \+ arg2$/)
+        expect(STDERR).to receive(:puts).with(/^Modified var arg3 = 4$/)
+        expect(STDERR).to receive(:puts).with(/line   62       arg3 \* 2$/)
+        expect(STDERR).to receive(:puts).with(/return 63     end$/)
+        expect(STDERR).to receive(:puts).with(/Return value 8/)
         subject
       end
 
@@ -28,16 +28,16 @@ RSpec.describe RubySnooper do
       subject { SampleClass.sample_class_method(1, 2) }
 
       it do
-        expect(STDOUT).to receive(:puts).with(/^From.*\/ruby_snooper\/spec\/ruby_snooper_spec.rb$/)
-        expect(STDOUT).to receive(:puts).with(/^Starting var arg1 = 1, arg2 = 2, arg3 = nil$/)
-        expect(STDOUT).to receive(:puts).with(/call   53     def self\.sample_class_method\(arg1, arg2\)$/)
-        expect(STDOUT).to receive(:puts).with(/line   54       arg1 \= arg1 \+ 1$/)
-        expect(STDOUT).to receive(:puts).with(/^Modified var arg1 = 2$/)
-        expect(STDOUT).to receive(:puts).with(/line   55       arg3 \= arg1 \+ arg2$/)
-        expect(STDOUT).to receive(:puts).with(/^Modified var arg3 = 4$/)
-        expect(STDOUT).to receive(:puts).with(/line   56       arg3 \* 2$/)
-        expect(STDOUT).to receive(:puts).with(/return 57     end$/)
-        expect(STDOUT).to receive(:puts).with(/Return value 8/)
+        expect(STDERR).to receive(:puts).with(/^From.*\/ruby_snooper\/spec\/ruby_snooper_spec.rb$/)
+        expect(STDERR).to receive(:puts).with(/^Starting var arg1 = 1, arg2 = 2, arg3 = nil$/)
+        expect(STDERR).to receive(:puts).with(/call   53     def self\.sample_class_method\(arg1, arg2\)$/)
+        expect(STDERR).to receive(:puts).with(/line   54       arg1 \= arg1 \+ 1$/)
+        expect(STDERR).to receive(:puts).with(/^Modified var arg1 = 2$/)
+        expect(STDERR).to receive(:puts).with(/line   55       arg3 \= arg1 \+ arg2$/)
+        expect(STDERR).to receive(:puts).with(/^Modified var arg3 = 4$/)
+        expect(STDERR).to receive(:puts).with(/line   56       arg3 \* 2$/)
+        expect(STDERR).to receive(:puts).with(/return 57     end$/)
+        expect(STDERR).to receive(:puts).with(/Return value 8/)
         subject
       end
 

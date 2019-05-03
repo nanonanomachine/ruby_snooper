@@ -74,9 +74,9 @@ module RubySnooper
       end
 
       def print
-        puts "From #{@file_path}" if @event == :call
+        STDERR.puts "From #{@file_path}" if @event == :call
         print_variables
-        puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number} #{code}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number} #{code}"
       end
 
       private
@@ -84,10 +84,10 @@ module RubySnooper
       def print_variables
         case @event
         when :call
-          puts "Starting var #{variables_str(@local_variables)}"
+          STDERR.puts "Starting var #{variables_str(@local_variables)}"
         when :line
-          puts "New var      #{variables_str(@new_variables)}" if @new_variables.count > 0
-          puts "Modified var #{variables_str(@modified_variables)}" if @modified_variables.count > 0
+          STDERR.puts "New var      #{variables_str(@new_variables)}" if @new_variables.count > 0
+          STDERR.puts "Modified var #{variables_str(@modified_variables)}" if @modified_variables.count > 0
         end
       end
 
@@ -112,8 +112,8 @@ module RubySnooper
       end
 
       def print
-        puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number} #{@code}"
-        puts "Return value #{@return_value}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number} #{@code}"
+        STDERR.puts "Return value #{@return_value}"
       end
     end
   end
