@@ -45,7 +45,7 @@ SampleClass.sample_class_method(1, 2)
 
 The output to stderr is:
 
-```ruby
+```
 From /some/file/path.rb
 Starting var arg1 = 1, arg2 = 2, arg3 = nil
 02:06:31,239 call   59     def sample_instance_method(arg1, arg2)
