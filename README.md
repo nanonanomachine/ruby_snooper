@@ -1,8 +1,6 @@
 # RubySnooper
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ruby_snooper`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+RubySnooper is Poort man's debugger is heavily inspired by [PySnooper](https://github.com/cool-RR/PySnooper)
 
 ## Installation
 
@@ -22,7 +20,53 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class SampleClass
+  extend RubySnooper
+  snoop :sample_instance_method
+  snoop_class_methods :sample_class_method
+
+  def self.sample_class_method(arg1, arg2)
+    arg1 = arg1 + 1
+    arg3 = arg1 + arg2
+    arg3 * 2
+  end
+
+  def sample_instance_method(arg1, arg2)
+    arg1 = arg1 + 1
+    arg3 = arg1 + arg2
+    arg3 * 2
+  end
+end
+
+SampleClass.new.sample_instance_method(1, 2)
+SampleClass.sample_class_method(1, 2)
+```
+
+The output to stdout is:
+
+```ruby
+From /some/file/path.rb
+Starting var arg1 = 1, arg2 = 2, arg3 = nil
+02:06:31,239 call   59     def sample_instance_method(arg1, arg2)
+02:06:31,239 line   60       arg1 = arg1 + 1
+Modified var arg1 = 2
+02:06:31,239 line   61       arg3 = arg1 + arg2
+Modified var arg3 = 4
+02:06:31,239 line   62       arg3 * 2
+02:06:31,239 return 63     end
+Return value 8
+From /some/file/path.rb
+Starting var arg1 = 1, arg2 = 2, arg3 = nil
+02:06:31,240 call   53     def self.sample_class_method(arg1, arg2)
+02:06:31,240 line   54       arg1 = arg1 + 1
+Modified var arg1 = 2
+02:06:31,240 line   55       arg3 = arg1 + arg2
+Modified var arg3 = 4
+02:06:31,241 line   56       arg3 * 2
+02:06:31,241 return 57     end
+Return value 8
+```
 
 ## Development
 
