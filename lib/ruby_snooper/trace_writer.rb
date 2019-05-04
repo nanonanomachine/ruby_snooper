@@ -78,7 +78,7 @@ module RubySnooper
       def print
         STDERR.puts "From #{@file_path}" if @event == :call
         print_variables
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number} #{str_colorized(code)}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number.to_s.rjust(4)} #{str_colorized(code)}"
       end
 
       private
@@ -118,7 +118,7 @@ module RubySnooper
       end
 
       def print
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number} #{str_colorized(@code)}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number.to_s.rjust(4)} #{str_colorized(@code)}"
         STDERR.puts "Return value #{@return_value}"
       end
 
