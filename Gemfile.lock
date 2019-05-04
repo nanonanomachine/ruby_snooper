@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     ruby_snooper (0.1.2)
-      coderay (~> 1.1.2)
+      coderay (>= 1.0)
 
 GEM
   remote: https://rubygems.org/
