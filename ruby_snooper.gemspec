@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["nanonanomachine"]
   spec.email         = ["koyama.gakugai@gmail.com"]
 
-  spec.summary       = %q{Poort man's debugger heavily inspired by PySnooper}
-  spec.description   = %q{Poort man's debugger heavily inspired by PySnooper}
+  spec.summary       = %q{Poor man's debugger heavily inspired by PySnooper}
+  spec.description   = %q{Poor man's debugger heavily inspired by PySnooper}
   spec.homepage      = "https://github.com/nanonanomachine/ruby_snooper"
   spec.license       = "MIT"
 

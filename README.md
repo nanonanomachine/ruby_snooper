@@ -1,6 +1,6 @@
 # RubySnooper
 
-RubySnooper is Poort man's debugger heavily inspired by [PySnooper](https://github.com/cool-RR/PySnooper)
+RubySnooper is Poor man's debugger heavily inspired by [PySnooper](https://github.com/cool-RR/PySnooper)
 
 ## Installation
 
