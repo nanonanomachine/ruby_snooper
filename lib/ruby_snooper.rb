@@ -19,12 +19,13 @@ module RubySnooper
   private
 
   def to_prepend(method_names)
+    caller_path = caller_locations[1].path
     Module.new do
       method_names.each do |method_name|
         define_method(method_name) do |*args, &block|
           trace_writer = TraceWriter.new(
             method_names,
-            caller_locations.first.path,
+            caller_path,
           )
           trace_writer.trace_point.enable
           super(*args,&block).tap do
