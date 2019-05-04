@@ -1,7 +1,7 @@
 module RubySnooper
   class TraceWriter
-    def initialize(method_names, caller_path)
-      @method_names = method_names
+    def initialize(method_name, caller_path)
+      @method_name = method_name
       @caller_path = caller_path
       @source_cache = {}
       @lines = []
@@ -19,7 +19,7 @@ module RubySnooper
 
     def trace_point
       @trace_point ||= TracePoint.new(:call, :line, :return) do |tp|
-        next unless @method_names.include?(tp.method_id)
+        next if @method_name != tp.method_id
         next if tp.path != @caller_path
 
         local_variables = tp.binding.local_variables.map do |name|

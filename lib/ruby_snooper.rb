@@ -24,7 +24,7 @@ module RubySnooper
       method_names.each do |method_name|
         define_method(method_name) do |*args, &block|
           trace_writer = TraceWriter.new(
-            method_names,
+            method_name,
             caller_path,
           )
           trace_writer.trace_point.enable
