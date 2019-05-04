@@ -1,3 +1,5 @@
+require 'coderay'
+
 module RubySnooper
   class TraceWriter
     def initialize(method_name, caller_path)
@@ -76,7 +78,7 @@ module RubySnooper
       def print
         STDERR.puts "From #{@file_path}" if @event == :call
         print_variables
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number} #{code}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number} #{str_colorized(code)}"
       end
 
       private
@@ -96,6 +98,10 @@ module RubySnooper
           "#{key} = #{value}"
         end.join(', ')
       end
+
+      def str_colorized(str)
+        ::CodeRay.scan(str, :ruby).term
+      end
     end
 
     class Return
@@ -112,8 +118,12 @@ module RubySnooper
       end
 
       def print
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number} #{@code}"
+        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number} #{str_colorized(@code)}"
         STDERR.puts "Return value #{@return_value}"
+      end
+
+      def str_colorized(str)
+        ::CodeRay.scan(str, :ruby).term
       end
     end
   end
