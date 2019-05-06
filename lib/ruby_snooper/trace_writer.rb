@@ -19,6 +19,10 @@ module RubySnooper
       @return.print
     end
 
+    def traces
+      @lines + [@return]
+    end
+
     def trace_point
       @trace_point ||= TracePoint.new(:call, :line, :return) do |tp|
         next if @method_name != tp.method_id
@@ -61,7 +65,7 @@ module RubySnooper
     end
 
     class Line
-      attr_reader :method_id, :event, :number, :time, :code, :local_variables, :new_variables, :modified_variables
+      attr_reader :method_id, :event, :number, :time, :code, :local_variables, :new_variables, :modified_variables, :file_path
 
       def initialize(method_id, event, number, time, code, local_variables, new_variables, modified_variables, file_path)
         @method_id = method_id

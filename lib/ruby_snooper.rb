@@ -1,5 +1,6 @@
 require "ruby_snooper/version"
 require "ruby_snooper/trace_writer"
+require "ruby_snooper/formatter"
 
 module RubySnooper
   class Error < StandardError; end
@@ -30,7 +31,7 @@ module RubySnooper
           trace_writer.trace_point.enable
           super(*args,&block).tap do
             trace_writer.trace_point.disable
-            trace_writer.print
+            RubySnooper::Formatter.new.stream(trace_writer.traces, &(STDERR.method(:puts)))
           end
         end
       end
