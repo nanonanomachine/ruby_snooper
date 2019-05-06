@@ -47,12 +47,14 @@ module RubySnooper
       end
     end
 
-    def code_for(filename)
-      @source_cache[filename] ||= IO.readlines(filename, chomp: true)
-    end
-
     def traces
       @lines + [@return]
+    end
+
+    private
+
+    def code_for(filename)
+      @source_cache[filename] ||= IO.readlines(filename, chomp: true)
     end
 
     class Line
