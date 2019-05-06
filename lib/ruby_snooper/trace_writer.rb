@@ -14,11 +14,6 @@ module RubySnooper
       @source_cache[filename] ||= IO.readlines(filename, chomp: true)
     end
 
-    def print
-      @lines.each(&:print)
-      @return.print
-    end
-
     def traces
       @lines + [@return]
     end
@@ -78,38 +73,6 @@ module RubySnooper
         @modified_variables = modified_variables
         @file_path = file_path
       end
-
-      def print
-        STDERR.puts "From #{@file_path}" if @event == :call
-        print_variables
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event}   #{number.to_s.rjust(4)} #{code_colorized(code)}"
-      end
-
-      private
-
-      def print_variables
-        case @event
-        when :call
-          STDERR.puts colorized("Starting var #{variables_str(@local_variables)}")
-        when :line
-          STDERR.puts colorized("New var      #{variables_str(@new_variables)}") if @new_variables.count > 0
-          STDERR.puts colorized("Modified var #{variables_str(@modified_variables)}") if @modified_variables.count > 0
-        end
-      end
-
-      def variables_str(variables)
-        variables.map do |key, value|
-          "#{key} = #{value}"
-        end.join(', ')
-      end
-
-      def code_colorized(str)
-        ::CodeRay.scan(str, :ruby).term
-      end
-
-      def colorized(str)
-        "\e[0;31m#{str}\e[0m"
-      end
     end
 
     class Return
@@ -123,19 +86,6 @@ module RubySnooper
         @code = code
         @return_value = return_value
         @file_path = file_path
-      end
-
-      def print
-        STDERR.puts "#{Time.now.strftime("%T,%L")} #{@event} #{@number.to_s.rjust(4)} #{code_colorized(@code)}"
-        STDERR.puts colorized("Return value #{@return_value}")
-      end
-
-      def code_colorized(str)
-        ::CodeRay.scan(str, :ruby).term
-      end
-
-      def colorized(str)
-        "\e[0;31m#{str}\e[0m"
       end
     end
   end
