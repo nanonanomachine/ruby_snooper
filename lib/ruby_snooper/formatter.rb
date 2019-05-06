@@ -1,3 +1,5 @@
+require 'coderay'
+
 module RubySnooper
   class Formatter
     def stream(traces, &block)
