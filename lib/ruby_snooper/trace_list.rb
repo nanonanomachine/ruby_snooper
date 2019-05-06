@@ -1,7 +1,5 @@
-require 'coderay'
-
 module RubySnooper
-  class TraceWriter
+  class TraceList
     def initialize(method_name, caller_path)
       @method_name = method_name
       @caller_path = caller_path
@@ -10,53 +8,51 @@ module RubySnooper
       @return = nil
     end
 
+    def add(tp)
+      return if @method_name != tp.method_id
+      return if tp.path != @caller_path
+
+      local_variables = tp.binding.local_variables.map do |name|
+        [name, tp.binding.local_variable_get(name).inspect]
+      end.to_h
+
+      if @lines.count > 0
+        new_variables = local_variables.select { |key,value| !@lines.last.local_variables.has_key?(key) }
+        modified_variables = local_variables.select {|key, value| @lines.last.local_variables.has_key?(key) && value != @lines.last.local_variables[key] }
+      end
+
+      case tp.event
+      when :call, :line
+        @lines << Line.new(
+          tp.method_id,
+          tp.event,
+          tp.lineno,
+          Time.now,
+          code_for(tp.path)[tp.lineno - 1],
+          local_variables,
+          new_variables,
+          modified_variables,
+          tp.path,
+        )
+      when :return
+        @return = Return.new(
+          tp.method_id,
+          tp.event,
+          tp.lineno,
+          Time.now,
+          code_for(tp.path)[tp.lineno - 1],
+          tp.return_value,
+          tp.path,
+        )
+      end
+    end
+
     def code_for(filename)
       @source_cache[filename] ||= IO.readlines(filename, chomp: true)
     end
 
     def traces
       @lines + [@return]
-    end
-
-    def trace_point
-      @trace_point ||= TracePoint.new(:call, :line, :return) do |tp|
-        next if @method_name != tp.method_id
-        next if tp.path != @caller_path
-
-        local_variables = tp.binding.local_variables.map do |name|
-          [name, tp.binding.local_variable_get(name).inspect]
-        end.to_h
-
-        if @lines.count > 0
-          new_variables = local_variables.select { |key,value| !@lines.last.local_variables.has_key?(key) }
-          modified_variables = local_variables.select {|key, value| @lines.last.local_variables.has_key?(key) && value != @lines.last.local_variables[key] }
-        end
-
-        case tp.event
-        when :call, :line
-          @lines << Line.new(
-            tp.method_id,
-            tp.event,
-            tp.lineno,
-            Time.now,
-            code_for(tp.path)[tp.lineno - 1],
-            local_variables,
-            new_variables,
-            modified_variables,
-            tp.path,
-          )
-        when :return
-          @return = Return.new(
-            tp.method_id,
-            tp.event,
-            tp.lineno,
-            Time.now,
-            code_for(tp.path)[tp.lineno - 1],
-            tp.return_value,
-            tp.path,
-          )
-        end
-      end
     end
 
     class Line
